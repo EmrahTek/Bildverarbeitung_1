@@ -1,0 +1,40 @@
+import cv2 as cv
+
+img = cv.imread('Photos/cat.jpg')
+cv.imshow('Cat', img)
+
+def rescaleFrame(frame, scale = 0.75):
+    # Images, Videos and Live Video
+    width = int(frame.shape[1]*scale) # Genislik
+    height = int(frame.shape[0]*scale) # Yükseklik
+    dimensions = (width,height) 
+    return cv.resize(frame,dimensions, interpolation=cv.INTER_AREA)
+
+def changeRes(width,height):
+    # Live Video
+    capture.set(3,width)
+    capture.set(4,height)
+
+resized_image = rescaleFrame(img)
+cv.imshow('Image', resized_image)
+
+
+
+# Reading Videos
+capture = cv.VideoCapture('Videos/dog.mp4') # Bir video dosyasini veya kamerayi acar. 
+
+while True:
+    isTrue, frame = capture.read() # read() her seferinde bir kare okur. 
+    frame_resized = rescaleFrame(frame, scale = .2)
+
+    cv.imshow('Video',frame)
+    cv.imshow('Video Resized', frame_resized)
+
+    if cv.waitKey(20) & 0xFF == ord('d'): # waitKey(20) 20 ms bekler(FPS kontrolü)
+        break
+
+capture.release()
+cv.destroyAllWindows()
+
+
+
